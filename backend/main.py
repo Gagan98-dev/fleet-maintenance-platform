@@ -1,55 +1,49 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
+
 from database import engine, Base, SessionLocal
-from models import Vehicle, Driver
-from schemas import VehicleCreate, DriverCreate, VehicleAssign
+from models import Vehicle, Driver, Maintenance
+from schemas import (
+    VehicleCreate,
+    DriverCreate,
+    VehicleAssign,
+    MaintenanceCreate,
+    MaintenanceUpdate
+)
+
 
 app = FastAPI(
     title="Fleet Management API",
     version="1.0"
 )
 
+
 Base.metadata.create_all(bind=engine)
 
+
+# Database connection
 def get_db():
     db = SessionLocal()
+
     try:
         yield db
     finally:
         db.close()
 
+
+# ================= HOME =================
+
 @app.get("/")
 def home():
     return {"message": "Fleet Management API is running!"}
 
-@app.put("/vehicles/{vehicle_id}")
-def update_vehicle(
-    vehicle_id: int,
-    vehicle: VehicleCreate,
-    db: Session = Depends(get_db)
-):
-    old_vehicle = db.query(Vehicle).filter(
-        Vehicle.id == vehicle_id
-    ).first()
 
-    if old_vehicle is None:
-     raise HTTPException(
-        status_code=404,
-        detail="Vehicle not found"
-    )
+# ================= VEHICLES =================
 
-    old_vehicle.vehicle_number = vehicle.vehicle_number
-    old_vehicle.model = vehicle.model
-    old_vehicle.vehicle_type = vehicle.vehicle_type
-    old_vehicle.status = vehicle.status
-
-    db.commit()
-    db.refresh(old_vehicle)
-
-    return old_vehicle
-
+# Get all vehicles
 @app.get("/vehicles")
 def get_vehicles(db: Session = Depends(get_db)):
+
     vehicles = db.query(Vehicle).all()
 
     result = []
@@ -67,10 +61,22 @@ def get_vehicles(db: Session = Depends(get_db)):
     return result
 
 
-
-
+# Add vehicle
 @app.post("/vehicles")
-def add_vehicle(vehicle: VehicleCreate, db: Session = Depends(get_db)):
+def add_vehicle(
+    vehicle: VehicleCreate,
+    db: Session = Depends(get_db)
+):
+
+    existing_vehicle = db.query(Vehicle).filter(
+        Vehicle.vehicle_number == vehicle.vehicle_number
+    ).first()
+
+    if existing_vehicle:
+        raise HTTPException(
+            status_code=400,
+            detail="Vehicle number already exists"
+        )
 
     new_vehicle = Vehicle(**vehicle.model_dump())
 
@@ -80,8 +86,64 @@ def add_vehicle(vehicle: VehicleCreate, db: Session = Depends(get_db)):
 
     return new_vehicle
 
+# Update vehicle
+@app.put("/vehicles/{vehicle_id}")
+def update_vehicle(
+    vehicle_id: int,
+    vehicle: VehicleCreate,
+    db: Session = Depends(get_db)
+):
+
+    old_vehicle = db.query(Vehicle).filter(
+        Vehicle.id == vehicle_id
+    ).first()
+
+    if old_vehicle is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Vehicle not found"
+        )
+
+    old_vehicle.vehicle_number = vehicle.vehicle_number
+    old_vehicle.model = vehicle.model
+    old_vehicle.vehicle_type = vehicle.vehicle_type
+    old_vehicle.status = vehicle.status
+
+    db.commit()
+    db.refresh(old_vehicle)
+
+    return old_vehicle
+
+
+# Delete vehicle
+@app.delete("/vehicles/{vehicle_id}")
+def delete_vehicle(
+    vehicle_id: int,
+    db: Session = Depends(get_db)
+):
+
+    vehicle = db.query(Vehicle).filter(
+        Vehicle.id == vehicle_id
+    ).first()
+
+    if vehicle is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Vehicle not found"
+        )
+
+    db.delete(vehicle)
+    db.commit()
+
+    return {"message": "Vehicle deleted successfully"}
+
+
+# ================= DRIVERS =================
+
+# Get all drivers
 @app.get("/drivers")
 def get_drivers(db: Session = Depends(get_db)):
+
     drivers = db.query(Driver).all()
 
     result = []
@@ -102,12 +164,50 @@ def get_drivers(db: Session = Depends(get_db)):
     return result
 
 
+# Add driver
+@app.post("/drivers")
+def create_driver(
+    driver: DriverCreate,
+    db: Session = Depends(get_db)
+):
+
+    existing_phone = db.query(Driver).filter(
+        Driver.phone == driver.phone
+    ).first()
+
+    if existing_phone:
+        raise HTTPException(
+            status_code=400,
+            detail="Phone number already exists"
+        )
+
+    existing_license = db.query(Driver).filter(
+        Driver.license_number == driver.license_number
+    ).first()
+
+    if existing_license:
+        raise HTTPException(
+            status_code=400,
+            detail="License number already exists"
+        )
+
+    new_driver = Driver(**driver.model_dump())
+
+    db.add(new_driver)
+    db.commit()
+    db.refresh(new_driver)
+
+    return new_driver
+
+
+# Update driver
 @app.put("/drivers/{driver_id}")
 def update_driver(
     driver_id: int,
     driver: DriverCreate,
     db: Session = Depends(get_db)
 ):
+
     existing_driver = db.query(Driver).filter(
         Driver.id == driver_id
     ).first()
@@ -128,35 +228,14 @@ def update_driver(
 
     return existing_driver
 
-@app.delete("/vehicles/{vehicle_id}")
-def delete_vehicle(vehicle_id: int, db: Session = Depends(get_db)):
 
-    vehicle = db.query(Vehicle).filter(
-        Vehicle.id == vehicle_id
-    ).first()
-
-    if vehicle is None:
-        raise HTTPException(
-            status_code=404,
-            detail="Vehicle not found"
-        )
-
-    db.delete(vehicle)
-    db.commit()
-
-    return {"message": "Vehicle deleted successfully"}
-@app.post("/drivers")
-def create_driver(driver: DriverCreate, db: Session = Depends(get_db)):
-    new_driver = Driver(**driver.model_dump())
-
-    db.add(new_driver)
-    db.commit()
-    db.refresh(new_driver)
-
-    return new_driver
-
+# Delete driver
 @app.delete("/drivers/{driver_id}")
-def delete_driver(driver_id: int, db: Session = Depends(get_db)):
+def delete_driver(
+    driver_id: int,
+    db: Session = Depends(get_db)
+):
+
     driver = db.query(Driver).filter(
         Driver.id == driver_id
     ).first()
@@ -172,12 +251,16 @@ def delete_driver(driver_id: int, db: Session = Depends(get_db)):
 
     return {"message": "Driver deleted successfully"}
 
+
+# ================= ASSIGN DRIVER =================
+
 @app.put("/vehicles/{vehicle_id}/assign")
 def assign_driver(
     vehicle_id: int,
     assignment: VehicleAssign,
     db: Session = Depends(get_db)
 ):
+
     vehicle = db.query(Vehicle).filter(
         Vehicle.id == vehicle_id
     ).first()
@@ -207,4 +290,103 @@ def assign_driver(
         "message": "Driver assigned successfully",
         "vehicle_id": vehicle.id,
         "driver_id": vehicle.driver_id
+    }
+
+
+# ================= MAINTENANCE =================
+
+# Add maintenance
+@app.post("/maintenance")
+def add_maintenance(
+    data: MaintenanceCreate,
+    db: Session = Depends(get_db)
+):
+
+    vehicle = db.query(Vehicle).filter(
+        Vehicle.id == data.vehicle_id
+    ).first()
+
+    if vehicle is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Vehicle not found"
+        )
+
+    record = Maintenance(**data.model_dump())
+
+    db.add(record)
+    db.commit()
+    db.refresh(record)
+
+    return record
+
+
+# Get maintenance
+@app.get("/maintenance")
+def get_maintenance(
+    db: Session = Depends(get_db)
+):
+
+    return db.query(Maintenance).all()
+
+
+# Update maintenance
+@app.put("/maintenance/{maintenance_id}")
+def update_maintenance(
+    maintenance_id: int,
+    data: MaintenanceUpdate,
+    db: Session = Depends(get_db)
+):
+
+    record = db.query(Maintenance).filter(
+        Maintenance.id == maintenance_id
+    ).first()
+
+    if record is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Maintenance record not found"
+        )
+
+    vehicle = db.query(Vehicle).filter(
+        Vehicle.id == data.vehicle_id
+    ).first()
+
+    if vehicle is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Vehicle not found"
+        )
+
+    for key, value in data.model_dump().items():
+        setattr(record, key, value)
+
+    db.commit()
+    db.refresh(record)
+
+    return record
+
+
+# Delete maintenance
+@app.delete("/maintenance/{maintenance_id}")
+def delete_maintenance(
+    maintenance_id: int,
+    db: Session = Depends(get_db)
+):
+
+    record = db.query(Maintenance).filter(
+        Maintenance.id == maintenance_id
+    ).first()
+
+    if record is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Maintenance record not found"
+        )
+
+    db.delete(record)
+    db.commit()
+
+    return {
+        "message": "Maintenance record deleted successfully"
     }

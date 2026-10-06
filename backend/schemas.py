@@ -13,3 +13,22 @@ class DriverCreate(BaseModel):
 
 class VehicleAssign(BaseModel):
     driver_id: int
+
+from datetime import datetime
+from pydantic import BaseModel
+
+class MaintenanceCreate(BaseModel):
+    vehicle_id: int
+    maintenance_type: str
+    description: str
+    cost: float
+    maintenance_date: datetime
+    status: str = "Pending"
+
+class MaintenanceUpdate(BaseModel):
+    vehicle_id: int
+    maintenance_type: str
+    description: str
+    cost: float
+    maintenance_date: datetime
+    status: str
