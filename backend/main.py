@@ -1,4 +1,6 @@
+
 from fastapi import FastAPI, Depends, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 from database import engine, Base, SessionLocal
@@ -11,12 +13,22 @@ from schemas import (
     MaintenanceUpdate
 )
 
-
 app = FastAPI(
     title="Fleet Management API",
     version="1.0"
 )
 
+# Allow the React frontend to connect to the backend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 Base.metadata.create_all(bind=engine)
 
@@ -24,7 +36,6 @@ Base.metadata.create_all(bind=engine)
 # Database connection
 def get_db():
     db = SessionLocal()
-
     try:
         yield db
     finally:
@@ -40,14 +51,11 @@ def home():
 
 # ================= VEHICLES =================
 
-# Get all vehicles
 @app.get("/vehicles")
 def get_vehicles(db: Session = Depends(get_db)):
-
     vehicles = db.query(Vehicle).all()
 
     result = []
-
     for vehicle in vehicles:
         result.append({
             "id": vehicle.id,
@@ -61,13 +69,11 @@ def get_vehicles(db: Session = Depends(get_db)):
     return result
 
 
-# Add vehicle
 @app.post("/vehicles")
 def add_vehicle(
     vehicle: VehicleCreate,
     db: Session = Depends(get_db)
 ):
-
     existing_vehicle = db.query(Vehicle).filter(
         Vehicle.vehicle_number == vehicle.vehicle_number
     ).first()
@@ -79,21 +85,19 @@ def add_vehicle(
         )
 
     new_vehicle = Vehicle(**vehicle.model_dump())
-
     db.add(new_vehicle)
     db.commit()
     db.refresh(new_vehicle)
 
     return new_vehicle
 
-# Update vehicle
+
 @app.put("/vehicles/{vehicle_id}")
 def update_vehicle(
     vehicle_id: int,
     vehicle: VehicleCreate,
     db: Session = Depends(get_db)
 ):
-
     old_vehicle = db.query(Vehicle).filter(
         Vehicle.id == vehicle_id
     ).first()
@@ -115,13 +119,11 @@ def update_vehicle(
     return old_vehicle
 
 
-# Delete vehicle
 @app.delete("/vehicles/{vehicle_id}")
 def delete_vehicle(
     vehicle_id: int,
     db: Session = Depends(get_db)
 ):
-
     vehicle = db.query(Vehicle).filter(
         Vehicle.id == vehicle_id
     ).first()
@@ -140,14 +142,11 @@ def delete_vehicle(
 
 # ================= DRIVERS =================
 
-# Get all drivers
 @app.get("/drivers")
 def get_drivers(db: Session = Depends(get_db)):
-
     drivers = db.query(Driver).all()
 
     result = []
-
     for driver in drivers:
         result.append({
             "id": driver.id,
@@ -164,13 +163,11 @@ def get_drivers(db: Session = Depends(get_db)):
     return result
 
 
-# Add driver
 @app.post("/drivers")
 def create_driver(
     driver: DriverCreate,
     db: Session = Depends(get_db)
 ):
-
     existing_phone = db.query(Driver).filter(
         Driver.phone == driver.phone
     ).first()
@@ -192,7 +189,6 @@ def create_driver(
         )
 
     new_driver = Driver(**driver.model_dump())
-
     db.add(new_driver)
     db.commit()
     db.refresh(new_driver)
@@ -200,14 +196,12 @@ def create_driver(
     return new_driver
 
 
-# Update driver
 @app.put("/drivers/{driver_id}")
 def update_driver(
     driver_id: int,
     driver: DriverCreate,
     db: Session = Depends(get_db)
 ):
-
     existing_driver = db.query(Driver).filter(
         Driver.id == driver_id
     ).first()
@@ -229,13 +223,11 @@ def update_driver(
     return existing_driver
 
 
-# Delete driver
 @app.delete("/drivers/{driver_id}")
 def delete_driver(
     driver_id: int,
     db: Session = Depends(get_db)
 ):
-
     driver = db.query(Driver).filter(
         Driver.id == driver_id
     ).first()
@@ -260,7 +252,6 @@ def assign_driver(
     assignment: VehicleAssign,
     db: Session = Depends(get_db)
 ):
-
     vehicle = db.query(Vehicle).filter(
         Vehicle.id == vehicle_id
     ).first()
@@ -282,7 +273,6 @@ def assign_driver(
         )
 
     vehicle.driver_id = assignment.driver_id
-
     db.commit()
     db.refresh(vehicle)
 
@@ -295,13 +285,11 @@ def assign_driver(
 
 # ================= MAINTENANCE =================
 
-# Add maintenance
 @app.post("/maintenance")
 def add_maintenance(
     data: MaintenanceCreate,
     db: Session = Depends(get_db)
 ):
-
     vehicle = db.query(Vehicle).filter(
         Vehicle.id == data.vehicle_id
     ).first()
@@ -313,7 +301,6 @@ def add_maintenance(
         )
 
     record = Maintenance(**data.model_dump())
-
     db.add(record)
     db.commit()
     db.refresh(record)
@@ -321,23 +308,17 @@ def add_maintenance(
     return record
 
 
-# Get maintenance
 @app.get("/maintenance")
-def get_maintenance(
-    db: Session = Depends(get_db)
-):
-
+def get_maintenance(db: Session = Depends(get_db)):
     return db.query(Maintenance).all()
 
 
-# Update maintenance
 @app.put("/maintenance/{maintenance_id}")
 def update_maintenance(
     maintenance_id: int,
     data: MaintenanceUpdate,
     db: Session = Depends(get_db)
 ):
-
     record = db.query(Maintenance).filter(
         Maintenance.id == maintenance_id
     ).first()
@@ -367,13 +348,11 @@ def update_maintenance(
     return record
 
 
-# Delete maintenance
 @app.delete("/maintenance/{maintenance_id}")
 def delete_maintenance(
     maintenance_id: int,
     db: Session = Depends(get_db)
 ):
-
     record = db.query(Maintenance).filter(
         Maintenance.id == maintenance_id
     ).first()
