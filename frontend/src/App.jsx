@@ -1,6 +1,8 @@
-
 import { useEffect, useState } from 'react'
 import './App.css'
+import BatteryIntelligence from "./pages/BatteryIntelligence";
+import ChargingOperations from "./pages/ChargingOperations";
+
 
 const API = 'http://127.0.0.1:8000'
 
@@ -66,8 +68,9 @@ function App() {
   const [driverForm, setDriverForm] = useState(emptyDriverForm)
   const [maintenanceForm, setMaintenanceForm] = useState(emptyMaintenanceForm)
 
-  async function loadData() {
-    setLoading(true)
+  async function loadData(showLoading = true) {
+    // Skip the synchronous loading update during the first page render.
+    if (showLoading) setLoading(true)
 
     const endpoints = [
       { name: 'vehicles', path: '/vehicles' },
@@ -106,21 +109,15 @@ function App() {
     setLoading(false)
   }
 
-  useEffect(() => {
-    loadData()
-  }, [])
+ useEffect(() => {
+    const timer = setTimeout(() => {
+        loadData(false);
+    }, 0);
 
-  const activeVehicles = vehicles.filter(
-    (v) => (v.status || '').toLowerCase() === 'active'
-  ).length
+    return () => clearTimeout(timer);
+}, []);
 
-  const inactiveVehicles = vehicles.filter(
-    (v) => (v.status || '').toLowerCase() === 'inactive'
-  ).length
-
-  const activeDrivers = drivers.filter(
-    (d) => (d.status || '').toLowerCase() === 'active'
-  ).length
+  
 
   const pendingMaintenance = maintenance.filter(
     (m) => ['pending', 'scheduled'].includes(
@@ -128,13 +125,7 @@ function App() {
     )
   ).length
 
-  const assignedVehicleNumbers = new Set(
-    drivers.flatMap((d) => Array.isArray(d.vehicles) ? d.vehicles : [])
-  )
-
-  const activeAssignments = vehicles.filter(
-    (v) => v.driver || assignedVehicleNumbers.has(v.vehicle_number)
-  ).length
+ 
 
   const vehicleById = Object.fromEntries(
     vehicles.map((v) => [v.id, v])
@@ -536,10 +527,23 @@ function App() {
     }
   })
 
-  const maxMonthlyCount = Math.max(
-    1,
-    ...maintenanceByMonth.map((m) => m.completed + m.pending)
-  )
+  
+  // Demonstration telemetry matching the supplied dashboard reference.
+  // These are sample values, not live vehicle/battery readings from the API.
+  const demoFleetStatuses = [
+    ...Array(186).fill('operational'),
+    ...Array(32).fill('charging'),
+    ...Array(20).fill('idle'),
+    ...Array(8).fill('maintenance'),
+    ...Array(4).fill('critical'),
+  ]
+
+  const demoAlerts = [
+    { vehicle: 'KA 04 EV 1111', message: 'Coolant pump fault, pack temperature rising', time: '12 min ago' },
+    { vehicle: 'KA 08 EV 3257', message: 'Insulation resistance below safe limit', time: '41 min ago' },
+    { vehicle: 'KA 04 EV 4774', message: 'Cell voltage imbalance above 120 mV', time: '1 hr ago' },
+    { vehicle: 'KA 06 EV 6180', message: 'Pack at 52°C under load', time: '2 hr ago' },
+  ]
 
   return (
     <div className="app">
@@ -548,10 +552,10 @@ function App() {
           border:0;border-radius:8px;padding:10px 14px;
           font:inherit;font-weight:600;cursor:pointer
         }
-        .primary-button {background:#2563eb;color:white}
+        .primary-button {background:#542536;color:white}
         .primary-button:disabled {opacity:.65;cursor:wait}
-        .secondary-button {background:#eef2ff;color:#1e40af}
-        .danger-button {background:#fee2e2;color:#b91c1c;margin-left:6px}
+        .secondary-button {background:#eee8dc;color:#542536}
+        .danger-button {background:#f5e1df;color:#963f4a;margin-left:6px}
         .vehicle-form-panel {margin-bottom:20px}
         .vehicle-form {
           display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
@@ -590,10 +594,10 @@ function App() {
 
       <aside className="sidebar">
         <div className="brand">
-          <span className="brand-icon">🚚</span>
+          <span className="brand-icon">ϟ</span>
           <div>
-            <h2>FastFleet</h2>
-            <small>Fleet Maintenance &amp; Analytics</small>
+            <h2>EV FASTFLEET</h2>
+            <small>INTELLIGENT OPERATIONS</small>
           </div>
         </div>
 
@@ -646,6 +650,20 @@ function App() {
             🔧 Maintenance
           </a>
           <a
+            className={activeSection === 'battery' ? 'active' : ''}
+            href="#battery-intelligence"
+            onClick={() => setActiveSection('battery')}
+          >
+            🔋 Battery Intelligence
+          </a>
+          <a
+            className={activeSection === 'charging' ? 'active' : ''}
+            href="#charging-operations"
+            onClick={() => setActiveSection('charging')}
+          >
+            ⚡ Charging Operations
+          </a>
+          <a
             href="#reports"
             onClick={() => setActiveSection('dashboard')}
           >
@@ -664,147 +682,160 @@ function App() {
 
       <main className="main">
         <header className="topbar">
-          <input
-            className="search"
-            placeholder="⌕   Search vehicles, drivers, or maintenance..."
-            aria-label="Search vehicles, drivers, or maintenance"
-          />
-          <div className="top-user">
-            <span className="notification">
+          <div className="topbar-brand">
+            <strong>EV FASTFLEET</strong>
+            <small>Intelligent Operations for Electric Fleets.</small>
+          </div>
+
+          <div className="topbar-controls">
+            <select className="company-select" defaultValue="Metro Logistics Pvt. Ltd." aria-label="Company">
+              <option>Metro Logistics Pvt. Ltd.</option>
+            </select>
+
+            <input
+              className="search"
+              placeholder="⌕  Search registration, vehicle or driver..."
+              aria-label="Search registration, vehicle or driver"
+            />
+
+            <div className="time-filters" aria-label="Dashboard time range">
+              <button type="button">24H</button>
+              <button type="button">7D</button>
+              <button type="button" className="selected">30D</button>
+              <button type="button">90D</button>
+            </div>
+
+            <button className="notification-button" type="button" aria-label="Notifications">
               ♧ <sup>{pendingMaintenance}</sup>
-            </span>
-            <span className="avatar">G</span>
-            Gagan⌄
+            </button>
+            <span className="avatar" title="Fleet administrator">AR</span>
           </div>
         </header>
 
         {activeSection === 'dashboard' && (
-          <section className="content" id="dashboard">
+          <section className="content fleet-dashboard" id="dashboard">
             {errors.map((error) => (
-              <p role="alert" key={error}>{error}</p>
+              <p role="alert" className="error-message" key={error}>{error}</p>
             ))}
 
-            <div className="page-heading">
+            <div className="dashboard-breadcrumb">01 / FLEET COMMAND</div>
+
+            <div className="fleet-title-row">
               <div>
-                <h1>Dashboard</h1>
-                <p>Overview of your fleet, drivers and maintenance status.</p>
+                <h1>Fleet command dashboard</h1>
+                <p>Your fleet at a glance, with operational intelligence.</p>
               </div>
-              <span className="date-button">
-                ▦ &nbsp; {new Date().toLocaleDateString('en-IN', {
-                  day: '2-digit',
-                  month: 'short',
-                  year: 'numeric',
-                })}
-              </span>
+              <div className="demo-label">
+                <span>DEMONSTRATION DATA</span>
+                <small>DEMO FLEET · 250 EVs · 6 DEPOTS</small>
+              </div>
             </div>
 
-            <div className="stats-grid">
-              <StatCard icon="🚘" number={loading ? '…' : vehicles.length}
-                title="Total Vehicles" note="Fleet vehicles" color="blue" />
-              <StatCard icon="♟" number={loading ? '…' : drivers.length}
-                title="Total Drivers" note={`${activeDrivers} active drivers`} color="green" />
-              <StatCard icon="🔧" number={loading ? '…' : maintenance.length}
-                title="Maintenance Records" note={`${pendingMaintenance} pending`} color="orange" />
-              <StatCard icon="⬡" number={loading ? '…' : activeAssignments}
-                title="Active Assignments" note="Assigned vehicles" color="purple" />
-            </div>
+            <div className="fleet-dashboard-grid">
+              <section className="panel fleet-overview">
+                <div className="section-topline">
+                  <span>FLEET OVERVIEW</span>
+                  <span className="outline-label">ILLUSTRATIVE TELEMETRY</span>
+                </div>
 
-            <div className="charts-grid">
-              <section className="panel">
-                <h3>Vehicle Status</h3>
-                <div className="vehicle-chart-area">
-                  <div
-                    className="donut"
-                    style={{
-                      background: vehicles.length
-                        ? `conic-gradient(#22c55e 0 ${(activeVehicles / vehicles.length) * 100}%, #3b82f6 ${(activeVehicles / vehicles.length) * 100}% 100%)`
-                        : '#e2e8f0',
-                    }}
-                  >
-                    <div>
-                      <strong>{loading ? '…' : vehicles.length}</strong>
-                      <span>Total</span>
-                    </div>
+                <div className="operational-summary">
+                  <div className="operational-number">186</div>
+                  <div className="operational-description">
+                    <h2>Operational <i>EVs</i></h2>
+                    <p>74.4% of the fleet in service</p>
+                    <small>▲ 3.2 pts vs previous period</small>
                   </div>
-                  <div className="legend">
-                    <p><i className="dot green-dot" /> Active <b>{activeVehicles}</b></p>
-                    <p><i className="dot blue-dot" /> Inactive <b>{inactiveVehicles}</b></p>
+                  <div className="total-fleet">
+                    <span>TOTAL FLEET</span>
+                    <strong>250</strong>
+                    <small>▲ 6 vehicles (+2.5%)</small>
                   </div>
                 </div>
-              </section>
 
-              <section className="panel">
-                <h3>Maintenance Overview</h3>
-                <div className="bar-chart">
-                  {maintenanceByMonth.map((item) => (
-                    <div className="bar-column" key={item.month}>
-                      <div className="bar-pair">
-                        <div
-                          className="bar"
-                          style={{
-                            height: `${Math.max(3, (item.completed / maxMonthlyCount) * 85)}px`,
-                          }}
-                          title={`Completed: ${item.completed}`}
-                        />
-                        <div
-                          className="bar pending-bar"
-                          style={{
-                            height: `${Math.max(3, (item.pending / maxMonthlyCount) * 85)}px`,
-                            visibility: item.pending ? 'visible' : 'hidden',
-                          }}
-                          title={`Pending: ${item.pending}`}
-                        />
-                      </div>
-                      <span>{item.month}</span>
-                    </div>
+                <div className="vehicle-square-grid" aria-label="Illustrative status grid of 250 vehicles">
+                  {demoFleetStatuses.map((status, index) => (
+                    <div
+                      key={index}
+                      className={`vehicle-square ${status}`}
+                      title={`Demo vehicle ${index + 1}: ${status}`}
+                    />
                   ))}
                 </div>
-                <div className="chart-legend">
-                  <span>🔵 Completed</span>
-                  <span>🟠 Pending</span>
+
+                <div className="fleet-legend">
+                  <span><i className="legend-square operational" /> Operational 186</span>
+                  <span><i className="legend-square charging" /> Charging 32</span>
+                  <span><i className="legend-square idle" /> Idle 20</span>
+                  <span><i className="legend-square maintenance" /> Maintenance 8</span>
+                  <span><i className="legend-square critical" /> Critical alert 4</span>
+                </div>
+
+                <p className="grid-note">Each square represents one demo vehicle · Red outline indicates a critical alert.</p>
+
+                <div className="fleet-bottom-stats">
+                  <div><strong>{loading ? '…' : vehicles.length}</strong><span>Registered vehicles</span></div>
+                  <div><strong>{loading ? '…' : drivers.length}</strong><span>Registered drivers</span></div>
+                  <div><strong>{loading ? '…' : maintenance.length}</strong><span>Maintenance records</span></div>
                 </div>
               </section>
+
+              <div className="fleet-right-column">
+                <section className="panel critical-panel">
+                  <div className="section-topline">
+                    <span>CRITICAL ALERTS</span>
+                    <small>DEMO TELEMETRY</small>
+                  </div>
+                  <div className="alert-summary">
+                    <strong>4</strong>
+                    <span>require action within 24 hours</span>
+                  </div>
+                  {demoAlerts.map((alert, index) => (
+                    <div className="critical-alert" key={index}>
+                      <span className="alert-dot" />
+                      <div className="alert-message">
+                        <strong>{alert.vehicle}</strong>
+                        <p>{alert.message}</p>
+                      </div>
+                      <small>{alert.time}</small>
+                    </div>
+                  ))}
+                </section>
+
+                <section className="panel insights-panel">
+                  <div className="section-topline">
+                    <span>AI FLEET INSIGHTS</span>
+                    <small>ILLUSTRATIVE</small>
+                  </div>
+                  <ul>
+                    <li><strong>KA 04 EV 1111</strong> coolant pump failure likely within 5 days (91% confidence).</li>
+                    <li>Shifting 6 night sessions off the 22:00 peak could save about ₹41,000 this month.</li>
+                    <li>3W fleet SoH is falling 1.6× faster than the 2W fleet; review the fast-charge share.</li>
+                  </ul>
+                  <p className="illustrative-note">Illustrative insights for demonstration only; not generated by a live prediction model.</p>
+                </section>
+              </div>
             </div>
 
-            <div className="tables-grid">
+            <div className="tables-grid dashboard-data-tables">
               <section className="panel table-panel">
                 <div className="panel-heading">
                   <h3>Recent Vehicles</h3>
-                  <a
-                    href="#vehicle-management"
-                    onClick={() => setActiveSection('vehicles')}
-                  >
-                    View All →
-                  </a>
+                  <a href="#vehicle-management" onClick={() => setActiveSection('vehicles')}>View All →</a>
                 </div>
                 <div className="table-scroll">
                   <table>
-                    <thead>
-                      <tr>
-                        <th>Vehicle No.</th><th>Model</th><th>Type</th>
-                        <th>Status</th><th>Driver</th>
-                      </tr>
-                    </thead>
+                    <thead><tr><th>Vehicle No.</th><th>Model</th><th>Status</th><th>Driver</th></tr></thead>
                     <tbody>
-                      {vehicles.map((vehicle) => (
+                      {vehicles.slice(0, 5).map((vehicle) => (
                         <tr key={vehicle.id}>
                           <td>{vehicle.vehicle_number}</td>
                           <td>{vehicle.model}</td>
-                          <td>{vehicle.vehicle_type || '—'}</td>
-                          <td>
-                            <span className={`badge ${(vehicle.status || '').toLowerCase()}`}>
-                              {vehicle.status || 'Unknown'}
-                            </span>
-                          </td>
+                          <td><span className={`badge ${(vehicle.status || '').toLowerCase()}`}>{vehicle.status || 'Unknown'}</span></td>
                           <td>{vehicle.driver || '—'}</td>
                         </tr>
                       ))}
-                      {!loading && vehicles.length === 0 && (
-                        <tr><td colSpan="5">No vehicles found.</td></tr>
-                      )}
-                      {loading && (
-                        <tr><td colSpan="5">Loading vehicles…</td></tr>
-                      )}
+                      {loading && <tr><td colSpan="4">Loading vehicles…</td></tr>}
+                      {!loading && vehicles.length === 0 && <tr><td colSpan="4">No vehicles found.</td></tr>}
                     </tbody>
                   </table>
                 </div>
@@ -813,54 +844,33 @@ function App() {
               <section className="panel table-panel">
                 <div className="panel-heading">
                   <h3>Upcoming Maintenance</h3>
+                  <a href="#maintenance" onClick={() => setActiveSection('maintenance')}>View All →</a>
                 </div>
                 <div className="table-scroll">
                   <table>
-                    <thead>
-                      <tr>
-                        <th>Vehicle No.</th><th>Type</th><th>Description</th>
-                        <th>Date</th><th>Status</th>
-                      </tr>
-                    </thead>
+                    <thead><tr><th>Vehicle</th><th>Maintenance</th><th>Date</th><th>Status</th></tr></thead>
                     <tbody>
-                      {maintenance.map((record) => (
+                      {maintenance.slice(0, 5).map((record) => (
                         <tr key={record.id}>
                           <td>{getVehicleNumber(record)}</td>
-                          <td>{record.maintenance_type}</td>
-                          <td>{record.description || '—'}</td>
+                          <td>{record.maintenance_type || '—'}</td>
                           <td>{getDate(record.maintenance_date)}</td>
-                          <td>
-                            <span className={`badge ${(record.status || '').toLowerCase()}`}>
-                              {record.status || 'Unknown'}
-                            </span>
-                          </td>
+                          <td>{record.status || 'Unknown'}</td>
                         </tr>
                       ))}
-                      {!loading && maintenance.length === 0 && (
-                        <tr><td colSpan="5">No maintenance records found.</td></tr>
-                      )}
-                      {loading && (
-                        <tr><td colSpan="5">Loading maintenance…</td></tr>
-                      )}
+                      {loading && <tr><td colSpan="4">Loading maintenance…</td></tr>}
+                      {!loading && maintenance.length === 0 && <tr><td colSpan="4">No maintenance records found.</td></tr>}
                     </tbody>
                   </table>
                 </div>
               </section>
             </div>
 
-            <div className="quick-actions">
-              <QuickAction icon="🚘" title="Add Vehicle"
-                text="Register a new vehicle to the fleet" color="blue"
-                onClick={openAddVehicle} />
-              <QuickAction icon="♟" title="Add Driver"
-                text="Add a new driver to the system" color="green"
-                onClick={openAddDriver} />
-              <QuickAction icon="🔧" title="Add Maintenance"
-                text="Schedule a maintenance record" color="purple"
-                onClick={openAddMaintenance} />
-              <QuickAction icon="🔗" title="Assign Driver"
-                text="Assign a driver to a vehicle" color="red"
-                onClick={openAssignForm} />
+            <div className="dashboard-quick-actions">
+              <button type="button" onClick={openAddVehicle}>+ Add Vehicle</button>
+              <button type="button" onClick={openAddDriver}>+ Add Driver</button>
+              <button type="button" onClick={openAddMaintenance}>+ Add Maintenance</button>
+              <button type="button" onClick={openAssignForm}>+ Assign Driver</button>
             </div>
           </section>
         )}
@@ -1507,38 +1517,19 @@ function App() {
             </section>
           </section>
         )}
+        {/* Battery Intelligence page */}
+        {activeSection === 'battery' && <BatteryIntelligence />}
+
+        {/* Charging Operations page */}
+        {activeSection === 'charging' && <ChargingOperations />}
+
       </main>
     </div>
   )
 }
 
-function StatCard({ icon, number, title, note, color }) {
-  return (
-    <div className={`stat-card ${color}`}>
-      <div className="stat-icon">{icon}</div>
-      <div>
-        <strong>{number}</strong>
-        <p>{title}</p>
-        <small>{note}</small>
-      </div>
-    </div>
-  )
-}
 
-function QuickAction({ icon, title, text, color, onClick }) {
-  return (
-    <button
-      className={`quick-action ${color}`}
-      onClick={onClick || (() => alert(`${title} will be implemented in the next stage.`))}
-    >
-      <span className="quick-icon">{icon}</span>
-      <span className="quick-text">
-        <strong>{title}</strong>
-        <small>{text}</small>
-      </span>
-      <span className="arrow">→</span>
-    </button>
-  )
-}
+
 
 export default App
+ 

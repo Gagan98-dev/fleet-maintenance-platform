@@ -1,0 +1,464 @@
+* {
+  box-sizing: border-box;
+}
+
+.fleet-page {
+  background: #f2eadc;
+  min-height: 100vh;
+  padding: 25px;
+  color: #302923;
+  font-family: Arial, sans-serif;
+}
+
+.page-heading {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+  border-top: 1px solid #d8cdbb;
+  padding-top: 15px;
+  flex-wrap: wrap;
+}
+
+.page-heading span {
+  font-size: 13px;
+  color: #7a263e;
+}
+
+.page-heading h1 {
+  font-family: Georgia, serif;
+  font-size: 34px;
+  font-weight: 400;
+  margin: 0;
+}
+
+.page-heading h1 i {
+  color: #713044;
+}
+
+.page-heading p {
+  color: #8a8175;
+  font-size: 13px;
+}
+
+.fleet-card {
+  background: #faf7ef;
+  border: 1px solid #ddd2c1;
+  border-radius: 5px;
+  padding: 18px;
+  box-shadow: 0 2px 5px rgba(50, 30, 20, 0.04);
+  min-width: 0;
+}
+
+.fleet-card h4 {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #918779;
+  margin: 0 0 20px;
+}
+
+.fleet-card small {
+  color: #898176;
+}
+
+.battery-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 0.75fr;
+  gap: 15px;
+}
+
+.battery-inspector h3 {
+  display: inline-block;
+  font-size: 12px;
+  color: #702a40;
+}
+
+.battery-tabs {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin: 15px 0;
+}
+
+.battery-tabs button {
+  background: transparent;
+  border: 1px solid #d8cbbb;
+  padding: 9px;
+  color: #766e63;
+  font-size: 10px;
+}
+
+.battery-tabs .selected {
+  background: #542438;
+  color: white;
+}
+
+.battery-heatmap {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 5px;
+}
+
+.battery-cell {
+  height: 35px;
+  border-radius: 4px;
+}
+
+.battery-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px 10px;
+  margin-top: 30px;
+}
+
+.battery-stats div {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.battery-stats strong {
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.scatter-chart {
+  height: 180px;
+  border-left: 1px solid #cfc5b6;
+  border-bottom: 1px solid #cfc5b6;
+  position: relative;
+  margin: 15px;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 43px,
+    #e6dfd3 44px
+  );
+}
+
+.scatter-chart span {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #622a40;
+}
+
+.scatter-chart span:nth-child(3n) {
+  background: #72938b;
+}
+
+.health-bars {
+  height: 120px;
+  display: flex;
+  align-items: end;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.health-bars div {
+  width: 35px;
+  height: 100%;
+  display: flex;
+  align-items: end;
+  flex-direction: column;
+  justify-content: end;
+}
+
+.health-bars div div {
+  width: 100%;
+  background: #77958c;
+  border-radius: 3px 3px 0 0;
+}
+
+.health-bars small {
+  margin-top: 5px;
+  font-size: 10px;
+}
+
+.low-battery-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-top: 1px solid #e1d8ca;
+}
+
+.low-battery-row div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.low-battery-row strong {
+  font-size: 13px;
+}
+
+.low-battery-row span {
+  font-size: 12px;
+}
+
+.battery-bottom {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.degradation-lines div {
+  height: 8px;
+  background: #719088;
+  margin: 22px 0;
+  border-radius: 10px;
+}
+
+.degradation-lines span {
+  font-size: 11px;
+}
+
+.degradation-card p {
+  font-size: 10px;
+  color: #888075;
+}
+
+.gauge {
+  height: 120px;
+  width: 150px;
+  max-width: 100%;
+  border: 12px solid #77938b;
+  border-bottom: 0;
+  border-radius: 100px 100px 0 0;
+  margin: 20px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.gauge strong {
+  font-size: 27px;
+  font-weight: 400;
+}
+
+.gauge small {
+  font-size: 10px;
+}
+
+.second-gauge {
+  border-color: #59263d;
+}
+
+.temperature-card {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.temperature-card h4 {
+  width: 100%;
+}
+
+.temperature-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: end;
+}
+
+.temperature-bar div {
+  width: 25px;
+  background: #713044;
+  border-radius: 3px 3px 0 0;
+}
+
+.temperature-bar small {
+  font-size: 9px;
+}
+
+/* CHARGING OPERATIONS */
+
+.charging-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: #faf7ef;
+  border: 1px solid #d9cfbf;
+  margin-bottom: 15px;
+}
+
+.charging-summary div {
+  padding: 20px;
+  border-right: 1px solid #ddd2c1;
+}
+
+.charging-summary small {
+  display: block;
+  color: #918779;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  margin-bottom: 15px;
+}
+
+.charging-summary strong {
+  font-family: Georgia, serif;
+  font-size: 30px;
+  font-weight: 400;
+}
+
+.charging-summary strong span {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  color: #898176;
+}
+
+.charging-main {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 15px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+th {
+  color: #898176;
+  text-align: left;
+  font-size: 10px;
+  padding: 12px 5px;
+}
+
+td {
+  padding: 14px 5px;
+  border-top: 1px solid #e1d8ca;
+}
+
+.progress-text {
+  color: #66887f;
+  font-weight: bold;
+}
+
+.station-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 8px;
+  align-items: center;
+  padding: 13px 0;
+  border-top: 1px solid #e1d8ca;
+}
+
+.station-row div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.station-row strong {
+  font-size: 12px;
+}
+
+.station-row small {
+  font-size: 10px;
+}
+
+.station-slots {
+  display: flex;
+  gap: 3px;
+}
+
+.station-slots span {
+  width: 13px;
+  height: 13px;
+  border: 1px solid #633045;
+  border-radius: 2px;
+}
+
+.station-slots .occupied {
+  background: #76958c;
+  border-color: #76958c;
+}
+
+.charging-bottom {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.timeline-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 23px 0;
+}
+
+.timeline-row > span {
+  width: 100px;
+  font-size: 10px;
+}
+
+.timeline-track {
+  flex: 1;
+  height: 18px;
+  background: #eee7dc;
+}
+
+.timeline-track div {
+  height: 100%;
+  background: #79968e;
+  border-radius: 3px;
+}
+
+.timeline-hours {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: #898176;
+}
+
+.history-card table {
+  font-size: 11px;
+}
+
+/* RESPONSIVE DESIGN */
+
+@media (max-width: 1000px) {
+  .battery-grid,
+  .battery-bottom,
+  .charging-main,
+  .charging-bottom {
+    grid-template-columns: 1fr;
+  }
+
+  .charging-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .fleet-page {
+    padding: 12px;
+  }
+
+  .page-heading h1 {
+    font-size: 25px;
+  }
+
+  .charging-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .battery-heatmap {
+    gap: 3px;
+  }
+
+  .battery-cell {
+    height: 22px;
+  }
+
+  .fleet-card {
+    overflow-x: auto;
+  }
+}
