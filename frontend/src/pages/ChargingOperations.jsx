@@ -1,47 +1,92 @@
+import { useEffect, useState } from "react";
 import "../FleetAnalytics.css";
+import { getJSON } from "../api";
+import DemoDataPrompt from "../components/DemoDataPrompt";
 
-const sessions = [
-  ["KA 01 EV 1333", "Alpha DC-1", "3", "24→45%", "37 min"],
-  ["KA 04 EV 1444", "Alpha DC-1", "3", "20→36%", "36 min"],
-  ["KA 07 EV 1555", "Alpha DC-1", "3", "8→18%", "48 min"],
-  ["KA 04 EV 1777", "Alpha DC-1", "3", "10→23%", "38 min"],
-  ["KA 05 EV 3146", "Alpha DC-1", "3", "23→54%", "24 min"],
-  ["KA 07 EV 3220", "Bravo DC", "3", "16→24%", "51 min"],
-  ["KA 01 EV 3331", "Bravo DC", "3", "37→47%", "29 min"],
-  ["KA 09 EV 3627", "Bravo DC", "3", "29→63%", "11 min"]
-];
+const REFRESH_MS = 30000;
 
-const stations = [
-  ["Alpha DC-1", "DC 60 kW", "3/8 free"],
-  ["Bravo DC", "DC 120 kW", "2/6 free"],
-  ["Central AC", "AC 22 kW", "2/12 free"],
-  ["Delta AC", "AC 22 kW", "6/10 free"],
-  ["Echo DC", "DC 60 kW", "1/6 free"],
-  ["Foxtrot AC", "AC 11 kW", "6/8 free"],
-  ["Midtown Public", "DC 120 kW", "2/4 free"],
-  ["Ring Rd Public", "DC 60 kW", "4/6 free"]
-];
-
-const history = [
-  ["KA 05 EV 6476", "Alpha DC-1", "13:00", "14", "₹134"],
-  ["KA 06 EV 6513", "Delta AC", "12:07", "19", "₹182"],
-  ["KA 07 EV 6550", "Midtown Public", "11:14", "24", "₹230"],
-  ["KA 08 EV 6587", "Bravo DC", "10:21", "29", "₹278"],
-  ["KA 09 EV 6624", "Echo DC", "09:28", "34", "₹326"],
-  ["KA 01 EV 6661", "Ring Rd Public", "08:35", "39", "₹374"]
-];
+const number = (n) => Number(n ?? 0).toLocaleString("en-IN");
+const rupees = (n) => `₹${number(n)}`;
+const clock = (iso) =>
+  iso
+    ? new Date(iso).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })
+    : "—";
 
 function ChargingOperations() {
+  const [data, setData] = useState(null);
+  const [error, setError] = useState("");
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  // Load now, then keep sessions fresh while the page is open
+  useEffect(() => {
+    let cancelled = false;
+
+    function load() {
+      getJSON("/charging/overview")
+        .then((result) => {
+          if (cancelled) return;
+          setData(result);
+          setError("");
+        })
+        .catch((err) => {
+          if (!cancelled) setError(err.message);
+        });
+    }
+
+    load();
+    const timer = setInterval(load, REFRESH_MS);
+
+    return () => {
+      cancelled = true;
+      clearInterval(timer);
+    };
+  }, [refreshKey]);
+
+  const heading = (
+    <div className="page-heading">
+      <span>04</span>
+      <h1>Charging <i>operations</i></h1>
+      <p>Sessions, stations and spend.</p>
+    </div>
+  );
+
+  if (!data) {
+    return (
+      <div className="fleet-page">
+        {heading}
+        <div className="fleet-card">
+          {error
+            ? <p style={{ color: "#963f4a" }}>{error}</p>
+            : <p>Loading charging data…</p>}
+        </div>
+      </div>
+    );
+  }
+
+  const { summary, sessions, stations, history, timeline } = data;
+
+  if (stations.length === 0) {
+    return (
+      <div className="fleet-page">
+        {heading}
+        <DemoDataPrompt onDone={() => setRefreshKey((k) => k + 1)} />
+      </div>
+    );
+  }
 
   return (
 
     <div className="fleet-page">
 
-      <div className="page-heading">
-        <span>04</span>
-        <h1>Charging <i>operations</i></h1>
-        <p>Sessions, stations and spend.</p>
-      </div>
+      {heading}
+
+      {error && (
+        <div className="fleet-card" style={{ marginBottom: 15 }}>
+          <small style={{ color: "#963f4a" }}>
+            Could not refresh: {error}. Showing the last loaded data.
+          </small>
+        </div>
+      )}
 
       {/* TOP SUMMARY */}
 
@@ -49,22 +94,22 @@ function ChargingOperations() {
 
         <div>
           <small>IN PROGRESS NOW</small>
-          <strong>32 <span>sessions · 26 ports free</span></strong>
+          <strong>{summary.in_progress} <span>sessions · {summary.free_ports} ports free</span></strong>
         </div>
 
         <div>
           <small>ENERGY CONSUMED</small>
-          <strong>1,02,600 <span>kWh</span></strong>
+          <strong>{number(summary.energy_kwh)} <span>kWh</span></strong>
         </div>
 
         <div>
           <small>CHARGING COST</small>
-          <strong>₹9,72,000</strong>
+          <strong>{rupees(summary.cost)}</strong>
         </div>
 
         <div>
           <small>AVG SESSION DURATION</small>
-          <strong>47 <span>min</span></strong>
+          <strong>{summary.avg_session_minutes} <span>min</span></strong>
         </div>
 
       </div>
@@ -92,17 +137,27 @@ function ChargingOperations() {
             </thead>
 
             <tbody>
-              {sessions.map((row, index) => (
-                <tr key={index}>
-                  {row.map((item, i) => (
-                    <td key={i}>
-                      {i === 4 ? (
-                        <span className="progress-text">{item}</span>
-                      ) : item}
-                    </td>
-                  ))}
-                </tr>
-              ))}
+              {sessions.length === 0 && (
+                <tr><td colSpan={6}>No active sessions.</td></tr>
+              )}
+
+              {sessions.map((s) => {
+                const total = s.target_soc - s.start_soc;
+                const progress = total > 0
+                  ? Math.round(Math.min(100, Math.max(0, ((s.current_soc - s.start_soc) / total) * 100)))
+                  : 100;
+
+                return (
+                  <tr key={s.id}>
+                    <td>{s.vehicle_number}</td>
+                    <td>{s.station}</td>
+                    <td>{s.power_kw}</td>
+                    <td>{s.start_soc}→{s.current_soc}%</td>
+                    <td><span className="progress-text">{progress}%</span></td>
+                    <td>{s.eta_minutes != null ? `${s.eta_minutes} min` : "—"}</td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
 
@@ -114,25 +169,25 @@ function ChargingOperations() {
 
           <h4>STATION AVAILABILITY</h4>
 
-          {stations.map((station, index) => (
+          {stations.map((station) => (
 
-            <div className="station-row" key={index}>
+            <div className="station-row" key={station.id}>
 
               <div>
-                <strong>{station[0]}</strong>
-                <small>{station[1]}</small>
+                <strong>{station.name}</strong>
+                <small>{station.charger_type} {station.power_kw} kW</small>
               </div>
 
               <div className="station-slots">
-                {Array.from({ length: 8 }).map((_, i) => (
+                {Array.from({ length: station.total_ports }).map((_, i) => (
                   <span
                     key={i}
-                    className={i < index + 2 ? "occupied" : ""}
+                    className={i < station.occupied_ports ? "occupied" : ""}
                   />
                 ))}
               </div>
 
-              <strong>{station[2]}</strong>
+              <strong>{station.free_ports}/{station.total_ports} free</strong>
 
             </div>
 
@@ -152,19 +207,19 @@ function ChargingOperations() {
 
           <h4>CHARGING ACTIVITY TIMELINE, LAST 24 H</h4>
 
-          {stations.map((station, index) => (
+          {timeline.map((row) => (
 
-            <div className="timeline-row" key={index}>
+            <div className="timeline-row" key={row.station}>
 
-              <span>{station[0]}</span>
+              <span>{row.station}</span>
 
               <div className="timeline-track">
-                <div
-                  style={{
-                    width: `${25 + index * 8}%`,
-                    marginLeft: `${index * 5}%`
-                  }}
-                />
+                {row.segments.map((seg, i) => (
+                  <div
+                    key={i}
+                    style={{ left: `${seg.left}%`, width: `${seg.width}%` }}
+                  />
+                ))}
               </div>
 
             </div>
@@ -172,11 +227,11 @@ function ChargingOperations() {
           ))}
 
           <div className="timeline-hours">
-            <span>00:00</span>
-            <span>06:00</span>
-            <span>12:00</span>
-            <span>18:00</span>
-            <span>00:00</span>
+            <span>-24h</span>
+            <span>-18h</span>
+            <span>-12h</span>
+            <span>-6h</span>
+            <span>now</span>
           </div>
 
         </div>
@@ -199,11 +254,17 @@ function ChargingOperations() {
             </thead>
 
             <tbody>
-              {history.map((row, index) => (
-                <tr key={index}>
-                  {row.map((item, i) => (
-                    <td key={i}>{item}</td>
-                  ))}
+              {history.length === 0 && (
+                <tr><td colSpan={5}>No completed sessions yet.</td></tr>
+              )}
+
+              {history.map((h) => (
+                <tr key={h.id}>
+                  <td>{h.vehicle_number}</td>
+                  <td>{h.station}</td>
+                  <td>{clock(h.ended_at)}</td>
+                  <td>{h.energy_kwh}</td>
+                  <td>{rupees(h.cost)}</td>
                 </tr>
               ))}
             </tbody>

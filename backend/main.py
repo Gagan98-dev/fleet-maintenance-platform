@@ -1,10 +1,10 @@
-
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 from database import engine, Base, SessionLocal
 from models import Vehicle, Driver, Maintenance
+from telemetry import router as telemetry_router
 from schemas import (
     VehicleCreate,
     DriverCreate,
@@ -25,12 +25,15 @@ app.add_middleware(
         "http://localhost:5173",
         "http://127.0.0.1:5173"
     ],
+    allow_origin_regex=r"http://(localhost|127\.0\.0\.1):\d+",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"]
 )
 
 Base.metadata.create_all(bind=engine)
+
+app.include_router(telemetry_router)
 
 
 # Database connection
