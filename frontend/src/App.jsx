@@ -259,31 +259,27 @@ function App() {
 
       <main className="main">
 
-        <header className="topbar">
-          <div>
-            <p>FLEET MANAGEMENT / {activePage.toUpperCase()}</p>
-            <h1>{activePage === "Overview" ? "Fleet Overview" : activePage}</h1>
-          </div>
+        {/* Topbar is hidden only on Overview */}
+        {activePage !== "Overview" && (
+          <header className="topbar">
+            <div>
+              <p>FLEET MANAGEMENT / {activePage.toUpperCase()}</p>
+              <h1>{activePage}</h1>
+            </div>
 
-          <div className="top-actions">
-            <span className="live-dot">● System Live</span>
-            <button className="icon-button" title="Notifications">♧</button>
-            <div className="top-avatar">FA</div>
-          </div>
-        </header>
+            <div className="top-actions">
+              <span className="live-dot">● System Live</span>
+              <button className="icon-button" title="Notifications">♧</button>
+              <div className="top-avatar">FA</div>
+            </div>
+          </header>
+        )}
 
         {/* OVERVIEW PAGE */}
 
         {activePage === "Overview" ? (
 
           <>
-            <section className="welcome">
-              <div>
-                <h2>Good day, Fleet Admin 👋</h2>
-                <p>Here is what's happening with your fleet today.</p>
-              </div>
-              <span className="date-label">⚡ Fleet Analytics Dashboard</span>
-            </section>
 
             <section className="section">
               <div className="section-heading">

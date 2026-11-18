@@ -1,4 +1,3 @@
-
 * {
   box-sizing: border-box;
 }
@@ -1199,3 +1198,48 @@ footer {
     font-size: 12px;
   }
 }
+
+/* EV FASTFLEET DESIGN THEME */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+:root {
+  --ff-burgundy: #542638;
+  --ff-background: #f2ebdf;
+  --ff-card: #faf7f0;
+  --ff-border: #d8cfc1;
+  --ff-text: #302923;
+  --ff-muted: #81766d;
+  --ff-sage: #829782;
+  --ff-ochre: #bd9454;
+}
+body { font-family: 'DM Sans', Arial, sans-serif; background: var(--ff-background); color: var(--ff-text); }
+.sidebar { background: var(--ff-burgundy); }
+.brand-icon, .profile-avatar, .top-avatar { background: #e8d9c6; color: var(--ff-burgundy); }
+.nav-item.active, .nav-item:hover { background: rgba(255,255,255,.15); color: #fff; }
+.main { background: var(--ff-background); }
+.panel { background: var(--ff-card); border-color: var(--ff-border); border-radius: 13px; box-shadow: 0 4px 16px rgba(65,43,35,.035); }
+.section-heading h2, .analytics-heading h2, .vehicles-heading h2, .drivers-heading h2 { font-family: 'Playfair Display', Georgia, serif; color: var(--ff-burgundy); }
+.panel h3, .panel-heading h3 { color: var(--ff-burgundy); }
+.tabs button.selected, .filter-tabs button.filter-active { background: var(--ff-burgundy); border-color: var(--ff-burgundy); color: #fff; }
+.add-vehicle-button { background: var(--ff-burgundy); }
+.add-vehicle-button:hover { background: #6a3349; }
+.kpi strong, .status-grid strong, .vehicle-summary-card strong { color: var(--ff-burgundy); }
+.bar-car, .purple { background: var(--ff-burgundy); }
+.bar-bus, .teal { background: var(--ff-sage); }
+.bar-truck, .brown { background: #b78a70; }
+.bar-other, .gold { background: var(--ff-ochre); }
+.donut { background: conic-gradient(var(--ff-sage) 0% 12%, #b78a70 12% 36%, var(--ff-burgundy) 36% 68%, var(--ff-ochre) 68% 88%, #665b52 88% 100%); }
+.schedule-chart div { background: var(--ff-sage); }
+.schedule-chart div:nth-child(4) { background: var(--ff-ochre); }
+.risk-fill.high { background: var(--ff-burgundy); }
+.risk-fill.low { background: var(--ff-sage); }
+th { color: var(--ff-muted); }
+td { color: var(--ff-text); }
+.topbar { border-color: var(--ff-border); }
+.topbar h1 { font-family: 'Playfair Display', Georgia, serif; color: var(--ff-burgundy) !important; }
+.welcome { display: none !important; }
+.vehicle-form input, .vehicle-form select, .vehicle-controls input, .vehicle-controls select { border-color: var(--ff-border); background: #fffdf9; color: var(--ff-text); }
+.vehicle-status { background: #e5eee5; color: #49674f; }
+.vehicle-status.in-service, .vehicle-status.scheduled { background: #f4ead5; color: #8c682c; }
+.vehicle-status.inactive { background: #eee8e1; color: #746b63; }
+@media (max-width: 600px) { .main { width: calc(100% - 65px); } }
+
