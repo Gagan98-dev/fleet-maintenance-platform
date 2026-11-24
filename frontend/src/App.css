@@ -643,3 +643,85 @@ td {
     gap: 18px;
   }
 }
+
+/* =========================================
+   FASTFLEET - RESPONSIVE IMPROVEMENTS
+   ========================================= */
+
+/* Better navigation on mobile */
+@media (max-width: 700px) {
+  .sidebar nav {
+    display: flex;
+    flex-wrap: wrap;
+    overflow-x: visible;
+    gap: 7px;
+  }
+
+  .sidebar nav a {
+    flex: 1 1 125px;
+    text-align: center;
+    padding: 11px 8px;
+  }
+
+  .brand h2 {
+    font-size: 23px;
+  }
+
+  .content {
+    padding: 16px 12px 24px;
+  }
+
+  .page-heading {
+    margin-bottom: 18px;
+  }
+
+  .stat-card,
+  .panel,
+  .quick-action {
+    border-radius: 12px;
+  }
+
+  .stat-card {
+    padding: 17px;
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table-scroll table {
+    min-width: 520px;
+  }
+
+  .quick-action {
+    min-height: 72px;
+    padding: 14px;
+  }
+}
+
+/* Better layout on tablets */
+@media (min-width: 701px) and (max-width: 1000px) {
+  .stats-grid,
+  .quick-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .charts-grid,
+  .tables-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Consistent hover effects */
+.stat-card,
+.panel,
+.quick-action {
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.stat-card:hover,
+.panel:hover {
+  box-shadow: 0 4px 14px #17203312;
+}
+

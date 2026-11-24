@@ -510,36 +510,59 @@ function App() {
     }
   }
 
-  const monthLabels = ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct']
+  
+const today = new Date()
 
-  const maintenanceByMonth = monthLabels.map((month, index) => {
-    const monthNumber = index + 5
+// Generate the latest six months automatically
+const monthLabels = Array.from({ length: 6 }, (_, index) => {
+  const date = new Date(
+    today.getFullYear(),
+    today.getMonth() - 5 + index,
+    1
+  )
 
-    const records = maintenance.filter((record) => {
-      if (!record.maintenance_date) return false
-      const date = new Date(record.maintenance_date)
+  return {
+    month: date.toLocaleString('en-US', { month: 'short' }),
+    year: date.getFullYear(),
+    monthNumber: date.getMonth(),
+  }
+})
 
-      return date.getFullYear() === 2026
-        && date.getMonth() + 1 === monthNumber
-    })
+const maintenanceByMonth = monthLabels.map((item) => {
+  const records = maintenance.filter((record) => {
+    if (!record.maintenance_date) return false
 
-    return {
-      month,
-      completed: records.filter(
-        (r) => (r.status || '').toLowerCase() === 'completed'
-      ).length,
-      pending: records.filter(
-        (r) => ['pending', 'scheduled'].includes(
-          (r.status || '').toLowerCase()
-        )
-      ).length,
-    }
+    const date = new Date(record.maintenance_date)
+
+    return (
+      !isNaN(date.getTime()) &&
+      date.getFullYear() === item.year &&
+      date.getMonth() === item.monthNumber
+    )
   })
 
-  const maxMonthlyCount = Math.max(
-    1,
-    ...maintenanceByMonth.map((m) => m.completed + m.pending)
+  return {
+    month: item.month,
+    completed: records.filter(
+      (r) => (r.status || '').toLowerCase() === 'completed'
+    ).length,
+    pending: records.filter(
+      (r) =>
+        ['pending', 'scheduled'].includes(
+          (r.status || '').toLowerCase()
+        )
+    ).length,
+  }
+})
+
+const maxMonthlyCount = Math.max(
+  1,
+  ...maintenanceByMonth.map(
+    (m) => m.completed + m.pending
   )
+)
+
+
 
   return (
     <div className="app">
