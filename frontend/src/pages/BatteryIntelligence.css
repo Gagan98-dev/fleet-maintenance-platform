@@ -1,0 +1,1310 @@
+* {
+  box-sizing: border-box;
+}
+
+.fleet-page {
+  background: #f2eadc;
+  min-height: 100vh;
+  padding: 25px;
+  color: #302923;
+  font-family: Arial, sans-serif;
+}
+
+.page-heading {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+  border-top: 1px solid #d8cdbb;
+  padding-top: 15px;
+  flex-wrap: wrap;
+}
+
+.page-heading span {
+  font-size: 13px;
+  color: #7a263e;
+}
+
+.page-heading h1 {
+  font-family: Georgia, serif;
+  font-size: 34px;
+  font-weight: 400;
+  margin: 0;
+}
+
+.page-heading h1 i {
+  color: #713044;
+}
+
+.page-heading p {
+  color: #8a8175;
+  font-size: 13px;
+}
+
+.fleet-card {
+  background: #faf7ef;
+  border: 1px solid #ddd2c1;
+  border-radius: 5px;
+  padding: 18px;
+  box-shadow: 0 2px 5px rgba(50, 30, 20, 0.04);
+  min-width: 0;
+}
+
+.fleet-card h4 {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #918779;
+  margin: 0 0 20px;
+}
+
+.fleet-card small {
+  color: #898176;
+}
+
+.battery-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 0.75fr;
+  gap: 15px;
+}
+
+.battery-inspector h3 {
+  display: inline-block;
+  font-size: 12px;
+  color: #702a40;
+}
+
+.battery-tabs {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin: 15px 0;
+}
+
+.battery-tabs button {
+  background: transparent;
+  border: 1px solid #d8cbbb;
+  padding: 9px;
+  color: #766e63;
+  font-size: 10px;
+}
+
+.battery-tabs .selected {
+  background: #542438;
+  color: white;
+}
+
+.battery-heatmap {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 5px;
+}
+
+.battery-cell {
+  height: 35px;
+  border-radius: 4px;
+}
+
+.battery-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px 10px;
+  margin-top: 30px;
+}
+
+.battery-stats div {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.battery-stats strong {
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.scatter-chart {
+  height: 180px;
+  border-left: 1px solid #cfc5b6;
+  border-bottom: 1px solid #cfc5b6;
+  position: relative;
+  margin: 15px;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 43px,
+    #e6dfd3 44px
+  );
+}
+
+.scatter-chart span {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #622a40;
+}
+
+.scatter-chart span:nth-child(3n) {
+  background: #72938b;
+}
+
+.health-bars {
+  height: 120px;
+  display: flex;
+  align-items: end;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.health-bars div {
+  width: 35px;
+  height: 100%;
+  display: flex;
+  align-items: end;
+  flex-direction: column;
+  justify-content: end;
+}
+
+.health-bars div div {
+  width: 100%;
+  background: #77958c;
+  border-radius: 3px 3px 0 0;
+}
+
+.health-bars small {
+  margin-top: 5px;
+  font-size: 10px;
+}
+
+.low-battery-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-top: 1px solid #e1d8ca;
+}
+
+.low-battery-row div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.low-battery-row strong {
+  font-size: 13px;
+}
+
+.low-battery-row span {
+  font-size: 12px;
+}
+
+.battery-bottom {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.degradation-lines div {
+  height: 8px;
+  background: #719088;
+  margin: 22px 0;
+  border-radius: 10px;
+}
+
+.degradation-lines span {
+  font-size: 11px;
+}
+
+.degradation-card p {
+  font-size: 10px;
+  color: #888075;
+}
+
+.gauge {
+  height: 120px;
+  width: 150px;
+  max-width: 100%;
+  border: 12px solid #77938b;
+  border-bottom: 0;
+  border-radius: 100px 100px 0 0;
+  margin: 20px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.gauge strong {
+  font-size: 27px;
+  font-weight: 400;
+}
+
+.gauge small {
+  font-size: 10px;
+}
+
+.second-gauge {
+  border-color: #59263d;
+}
+
+.temperature-card {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.temperature-card h4 {
+  width: 100%;
+}
+
+.temperature-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: end;
+}
+
+.temperature-bar div {
+  width: 25px;
+  background: #713044;
+  border-radius: 3px 3px 0 0;
+}
+
+.temperature-bar small {
+  font-size: 9px;
+}
+
+/* CHARGING OPERATIONS */
+
+.charging-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: #faf7ef;
+  border: 1px solid #d9cfbf;
+  margin-bottom: 15px;
+}
+
+.charging-summary div {
+  padding: 20px;
+  border-right: 1px solid #ddd2c1;
+}
+
+.charging-summary small {
+  display: block;
+  color: #918779;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  margin-bottom: 15px;
+}
+
+.charging-summary strong {
+  font-family: Georgia, serif;
+  font-size: 30px;
+  font-weight: 400;
+}
+
+.charging-summary strong span {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  color: #898176;
+}
+
+.charging-main {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 15px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+th {
+  color: #898176;
+  text-align: left;
+  font-size: 10px;
+  padding: 12px 5px;
+}
+
+td {
+  padding: 14px 5px;
+  border-top: 1px solid #e1d8ca;
+}
+
+.progress-text {
+  color: #66887f;
+  font-weight: bold;
+}
+
+.station-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 8px;
+  align-items: center;
+  padding: 13px 0;
+  border-top: 1px solid #e1d8ca;
+}
+
+.station-row div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.station-row strong {
+  font-size: 12px;
+}
+
+.station-row small {
+  font-size: 10px;
+}
+
+.station-slots {
+  display: flex;
+  gap: 3px;
+}
+
+.station-slots span {
+  width: 13px;
+  height: 13px;
+  border: 1px solid #633045;
+  border-radius: 2px;
+}
+
+.station-slots .occupied {
+  background: #76958c;
+  border-color: #76958c;
+}
+
+.charging-bottom {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.timeline-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 23px 0;
+}
+
+.timeline-row > span {
+  width: 100px;
+  font-size: 10px;
+}
+
+.timeline-track {
+  flex: 1;
+  height: 18px;
+  background: #eee7dc;
+}
+
+.timeline-track div {
+  height: 100%;
+  background: #79968e;
+  border-radius: 3px;
+}
+
+.timeline-hours {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: #898176;
+}
+
+.history-card table {
+  font-size: 11px;
+}
+
+/* RESPONSIVE DESIGN */
+
+@media (max-width: 1000px) {
+  .battery-grid,
+  .battery-bottom,
+  .charging-main,
+  .charging-bottom {
+    grid-template-columns: 1fr;
+  }
+
+  .charging-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .fleet-page {
+    padding: 12px;
+  }
+
+  .page-heading h1 {
+    font-size: 25px;
+  }
+
+  .charging-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .battery-heatmap {
+    gap: 3px;
+  }
+
+  .battery-cell {
+    height: 22px;
+  }
+
+  .fleet-card {
+    overflow-x: auto;
+  }
+}
+
+/* ==========================================
+   BATTERY INTELLIGENCE - SLIDE 3 IMPROVEMENTS
+   Scoped styles: other slides remain unchanged
+========================================== */
+
+.battery-page {
+  padding: 25px;
+}
+
+.battery-page .page-heading {
+  margin-bottom: 24px;
+}
+
+.battery-page .page-heading h1 {
+  font-size: clamp(27px, 3vw, 34px);
+}
+
+.battery-page .page-heading p {
+  font-size: 14px;
+}
+
+.battery-page .fleet-card {
+  padding: 20px;
+  border-radius: 7px;
+}
+
+.battery-page .fleet-card h4 {
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 1.4px;
+  margin-bottom: 17px;
+}
+
+.battery-page .fleet-card small {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* Pack inspector */
+
+.battery-page .battery-inspector h3 {
+  font-size: 17px;
+  margin: 0;
+}
+
+.battery-page .battery-tabs button {
+  font-size: 11px;
+  padding: 10px 12px;
+  border-radius: 4px;
+}
+
+.battery-page .battery-heatmap {
+  gap: 6px;
+}
+
+.battery-page .battery-cell {
+  min-height: 27px;
+  height: clamp(27px, 3vw, 38px);
+}
+
+.battery-page .battery-stats {
+  gap: 20px 12px;
+  margin-top: 25px;
+}
+
+.battery-page .battery-stats small {
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+.battery-page .battery-stats strong {
+  font-size: 19px;
+}
+
+/* SOC vs SOH scatter chart */
+
+.battery-page .scatter-chart {
+  height: 190px;
+  margin: 15px 12px 8px;
+  border-left: 1px solid #cfc5b6;
+  border-bottom: 1px solid #cfc5b6;
+}
+
+.battery-page .scatter-chart span {
+  width: 8px;
+  height: 8px;
+}
+
+.battery-page .scatter-axis-labels {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 8px 0 20px;
+}
+
+.battery-page .scatter-axis-labels span {
+  color: #81776d;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.battery-page .health-distribution-title {
+  margin-top: 15px;
+}
+
+/* Health distribution */
+
+.battery-page .health-bars {
+  height: 145px;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-around;
+  gap: 9px;
+  margin-top: 15px;
+}
+
+.battery-page .health-bars .health-bar-item {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.battery-page .health-bar-item > strong {
+  font-size: 11px;
+  color: #542638;
+}
+
+.battery-page .health-bar-item .health-bar-track {
+  width: 100%;
+  height: 95px;
+  background: #eee8dd;
+  display: flex;
+  align-items: flex-end;
+  border-radius: 4px 4px 0 0;
+  overflow: hidden;
+}
+
+.battery-page .health-bar-item .health-bar-fill {
+  width: 100%;
+  background: #77958c;
+  border-radius: 4px 4px 0 0;
+}
+
+.battery-page .health-bar-item small {
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+/* Low battery list */
+
+.battery-page .low-battery-row {
+  gap: 10px;
+  padding: 12px 0;
+}
+
+.battery-page .low-battery-row strong {
+  font-size: 15px;
+  color: #542638;
+}
+
+.battery-page .low-battery-row small {
+  font-size: 12px;
+}
+
+.battery-page .low-battery-row span {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* SOH degradation */
+
+.battery-page .degradation-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+  margin-top: 22px;
+}
+
+.battery-page .degradation-lines .degradation-row {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  height: auto;
+  background: transparent;
+}
+
+.battery-page .degradation-row > span {
+  font-size: 13px;
+  font-weight: 600;
+  color: #542638;
+}
+
+.battery-page .degradation-row .degradation-track {
+  width: 100%;
+  height: 13px;
+  background: #eae3d8;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.battery-page .degradation-track .degradation-fill {
+  height: 100%;
+  background: #77958c;
+  border-radius: 20px;
+}
+
+.battery-page .degradation-months {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: 22px;
+  padding-top: 12px;
+  border-top: 1px solid #e1d8ca;
+}
+
+.battery-page .degradation-months span {
+  color: #81776d;
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+/* Fleet average gauges */
+
+.battery-page .average-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.battery-page .average-card h4 {
+  width: 100%;
+}
+
+.battery-page .gauge {
+  height: 112px;
+  width: 145px;
+  margin: 15px auto;
+  border-width: 11px;
+}
+
+.battery-page .gauge strong {
+  font-size: 27px;
+  font-weight: 500;
+  margin-top: 5px;
+}
+
+.battery-page .gauge small {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.7px;
+  margin-top: 5px;
+}
+
+/* Temperature spread */
+
+.battery-page .temperature-card {
+  display: block;
+}
+
+.battery-page .temperature-bars {
+  height: 155px;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  gap: 8px;
+  border-bottom: 1px solid #d8cdbb;
+  padding: 0 5px;
+}
+
+.battery-page .temperature-bar {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 9px;
+}
+
+.battery-page .temperature-bar-fill {
+  width: min(100%, 32px);
+  max-height: 112px;
+  min-height: 3px;
+  background: #713044;
+  border-radius: 4px 4px 0 0;
+}
+
+.battery-page .temperature-bar small {
+  font-size: 11px;
+  white-space: nowrap;
+  color: #62594f;
+}
+
+.battery-page .temperature-unit {
+  text-align: center;
+  color: #81776d;
+  font-size: 10px;
+  letter-spacing: 0.7px;
+  margin-top: 13px;
+}
+
+/* Responsive layout */
+
+@media (max-width: 1100px) {
+  .battery-page .battery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .battery-page .low-battery {
+    grid-column: 1 / -1;
+  }
+
+  .battery-page .battery-bottom {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .battery-page .degradation-card {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 650px) {
+  .battery-page {
+    padding: 14px;
+  }
+
+  .battery-page .battery-grid,
+  .battery-page .battery-bottom {
+    grid-template-columns: 1fr;
+  }
+
+  .battery-page .low-battery,
+  .battery-page .degradation-card {
+    grid-column: auto;
+  }
+
+  .battery-page .battery-cell {
+    height: 22px;
+    min-height: 22px;
+  }
+
+  .battery-page .battery-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .battery-page .degradation-months span {
+    font-size: 9px;
+  }
+
+  .battery-page .fleet-card {
+    min-width: 0;
+  }
+}
+
+/* =========================================
+   BATTERY INTELLIGENCE - READABILITY FIXES
+   These styles apply only to Slide 3.
+========================================= */
+
+/* Improve card spacing and text readability */
+
+.battery-page .fleet-card {
+  padding: 20px;
+}
+
+.battery-page .fleet-card h4 {
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 1.5px;
+  margin-bottom: 22px;
+}
+
+.battery-page .fleet-card small {
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* Pack inspector */
+
+.battery-page .battery-inspector h3 {
+  font-size: 15px;
+}
+
+.battery-page .battery-cell {
+  min-height: 30px;
+}
+
+.battery-page .battery-stats {
+  gap: 24px 14px;
+}
+
+.battery-page .battery-stats small {
+  font-size: 11px;
+}
+
+.battery-page .battery-stats strong {
+  font-size: 19px;
+}
+
+/* Scatter chart */
+
+.battery-page .scatter-chart {
+  height: 190px;
+  margin: 18px 12px 28px;
+}
+
+/* Health distribution */
+
+.battery-page .health-bars {
+  height: 135px;
+  margin: 22px 8px 10px;
+}
+
+.battery-page .health-bars small {
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+/* Low battery list */
+
+.battery-page .low-battery-row {
+  padding: 14px 0;
+}
+
+.battery-page .low-battery-row strong {
+  font-size: 14px;
+}
+
+.battery-page .low-battery-row small,
+.battery-page .low-battery-row span {
+  font-size: 12px;
+}
+
+/* SOH degradation chart */
+
+.battery-page .degradation-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  margin-top: 25px;
+}
+
+.battery-page .degradation-row {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+}
+
+.battery-page .degradation-row span {
+  font-size: 12px;
+  font-weight: 600;
+  color: #542638;
+}
+
+.battery-page .degradation-track {
+  width: 100%;
+  height: 10px;
+  background: #e8e1d6;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.battery-page .degradation-fill {
+  height: 100%;
+  background: #719088;
+  border-radius: 20px;
+}
+
+.battery-page .degradation-months {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 28px;
+  padding-top: 12px;
+  border-top: 1px solid #e1d8ca;
+  color: #81776d;
+  font-size: 11px;
+  flex-wrap: wrap;
+}
+
+/* Fleet average gauges */
+
+.battery-page .gauge {
+  height: 115px;
+  width: 155px;
+  margin: 24px auto;
+}
+
+.battery-page .gauge strong {
+  font-size: 29px;
+}
+
+.battery-page .gauge small {
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+/* Pack temperature spread */
+
+.battery-page .temperature-card {
+  align-items: end;
+  justify-content: space-around;
+  gap: 12px;
+  min-height: 280px;
+}
+
+.battery-page .temperature-card h4 {
+  align-self: start;
+}
+
+.battery-page .temperature-bar {
+  flex: 1;
+  min-width: 0;
+  gap: 9px;
+}
+
+.battery-page .temperature-bar div {
+  width: min(36px, 75%);
+  max-width: 100%;
+}
+
+.battery-page .temperature-bar small {
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+/* Responsive layout */
+
+@media (max-width: 1000px) {
+  .battery-page .battery-grid,
+  .battery-page .battery-bottom {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .battery-page {
+    padding: 14px;
+  }
+
+  .battery-page .battery-cell {
+    min-height: 20px;
+  }
+
+  .battery-page .battery-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .battery-page .degradation-months {
+    font-size: 10px;
+  }
+
+  .battery-page .temperature-card {
+    min-height: 250px;
+  }
+}
+
+/* =========================================
+   FINAL FIX - BATTERY CHART VISIBILITY
+========================================= */
+
+/* Fix SOH degradation rows */
+
+.battery-page .degradation-lines > .degradation-row {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+
+  height: auto;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+}
+
+.battery-page .degradation-row > span {
+  font-size: 12px;
+  font-weight: 600;
+  color: #542638;
+}
+
+.battery-page .degradation-row > .degradation-track {
+  display: block;
+  width: 100%;
+  height: 11px;
+  margin: 0;
+  padding: 0;
+  background: #e8e1d6;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.battery-page .degradation-track > .degradation-fill {
+  display: block;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #719088;
+  border-radius: 20px;
+}
+
+/* Fix pack temperature chart */
+
+.battery-page .temperature-card {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-rows: auto 180px;
+  align-items: end;
+  gap: 12px;
+  min-height: 300px;
+}
+
+.battery-page .temperature-card h4 {
+  grid-column: 1 / -1;
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.battery-page .temperature-bar {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  height: 180px;
+  min-width: 0;
+  gap: 9px;
+}
+
+.battery-page .temperature-bar > div {
+  display: block;
+  flex: 0 0 auto;
+  width: 32px;
+  max-width: 80%;
+  max-height: 150px;
+  margin: 0;
+  padding: 0;
+  background: #713044;
+  border-radius: 4px 4px 0 0;
+}
+
+.battery-page .temperature-bar small {
+  display: block;
+  font-size: 11px;
+  white-space: nowrap;
+  color: #81776d;
+}
+
+/* Small screen adjustment */
+
+@media (max-width: 600px) {
+  .battery-page .temperature-card {
+    grid-template-rows: auto 160px;
+    min-height: 270px;
+    gap: 8px;
+  }
+
+  .battery-page .temperature-bar {
+    height: 160px;
+  }
+
+  .battery-page .temperature-bar > div {
+    max-width: 70%;
+  }
+}
+/* =========================================
+   FASTFLEET - SLIDES 3 & 4
+   FINAL TEXT READABILITY UPDATE
+========================================= */
+
+/* Shared page headings */
+
+.battery-page .page-heading h1,
+.charging-page .page-heading h1 {
+  font-size: 42px !important;
+}
+
+.battery-page .page-heading span,
+.charging-page .page-heading span {
+  font-size: 14px !important;
+}
+
+.battery-page .page-heading p,
+.charging-page .page-heading p {
+  font-size: 16px !important;
+  line-height: 1.6;
+}
+
+/* Card headings */
+
+.battery-page .fleet-card h4,
+.charging-page .fleet-card h4 {
+  font-size: 14px !important;
+  letter-spacing: 1.2px;
+  line-height: 1.5;
+}
+
+/* Battery Intelligence */
+
+.battery-page .battery-inspector h3 {
+  font-size: 19px !important;
+}
+
+.battery-page .battery-tabs button {
+  font-size: 13px !important;
+  padding: 11px 14px;
+}
+
+.battery-page .fleet-card small {
+  font-size: 13px !important;
+}
+
+.battery-page .battery-stats small {
+  font-size: 13px !important;
+}
+
+.battery-page .battery-stats strong {
+  font-size: 22px !important;
+}
+
+.battery-page .scatter-axis-labels span {
+  font-size: 12px !important;
+}
+
+.battery-page .health-bar-item > strong {
+  font-size: 13px !important;
+}
+
+.battery-page .health-bar-item small {
+  font-size: 12px !important;
+}
+
+.battery-page .low-battery-row strong {
+  font-size: 16px !important;
+}
+
+.battery-page .low-battery-row small,
+.battery-page .low-battery-row span {
+  font-size: 14px !important;
+}
+
+.battery-page .degradation-row > span {
+  font-size: 14px !important;
+}
+
+.battery-page .degradation-months span {
+  font-size: 12px !important;
+}
+
+.battery-page .gauge strong {
+  font-size: 31px !important;
+}
+
+.battery-page .gauge small {
+  font-size: 12px !important;
+}
+
+.battery-page .temperature-bar small {
+  font-size: 12px !important;
+}
+
+.battery-page .temperature-unit {
+  font-size: 12px !important;
+}
+
+/* Charging Operations */
+
+.charging-page .charging-summary small {
+  font-size: 13px !important;
+}
+
+.charging-page .charging-summary strong {
+  font-size: 34px !important;
+}
+
+.charging-page .charging-summary strong span {
+  font-size: 14px !important;
+}
+
+.charging-page table {
+  font-size: 14px !important;
+}
+
+.charging-page th {
+  font-size: 13px !important;
+  padding: 14px 8px;
+}
+
+.charging-page td {
+  font-size: 14px !important;
+  padding: 16px 8px;
+}
+
+.charging-page .station-row strong {
+  font-size: 14px !important;
+}
+
+.charging-page .station-row small {
+  font-size: 12px !important;
+}
+
+.charging-page .timeline-row > span {
+  font-size: 13px !important;
+}
+
+.charging-page .timeline-hours {
+  font-size: 12px !important;
+}
+
+/* Responsive adjustments */
+
+@media (max-width: 650px) {
+  .battery-page .page-heading h1,
+  .charging-page .page-heading h1 {
+    font-size: 30px !important;
+  }
+
+  .battery-page .page-heading p,
+  .charging-page .page-heading p {
+    font-size: 14px !important;
+  }
+
+  .battery-page .battery-stats strong {
+    font-size: 19px !important;
+  }
+
+  .charging-page .charging-summary strong {
+    font-size: 29px !important;
+  }
+
+  .charging-page table {
+    min-width: 520px;
+  }
+}

@@ -1,0 +1,293 @@
+
+/* CHARGING OPERATIONS PAGE */
+
+.charging-page {
+  background: #f2eadc;
+  min-height: 100vh;
+  padding: 25px;
+  color: #302923;
+  font-family: Arial, sans-serif;
+}
+
+/* Page heading */
+
+.charging-page .page-heading {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+  border-top: 1px solid #d8cdbb;
+  padding-top: 15px;
+  flex-wrap: wrap;
+}
+
+.charging-page .page-heading span {
+  font-size: 13px;
+  color: #7a263e;
+}
+
+.charging-page .page-heading h1 {
+  font-family: Georgia, serif;
+  font-size: 34px;
+  font-weight: 400;
+  margin: 0;
+}
+
+.charging-page .page-heading h1 i {
+  color: #713044;
+}
+
+.charging-page .page-heading p {
+  color: #8a8175;
+  font-size: 13px;
+}
+
+/* Common cards */
+
+.charging-page .fleet-card {
+  background: #faf7ef;
+  border: 1px solid #ddd2c1;
+  border-radius: 5px;
+  padding: 18px;
+  box-shadow: 0 2px 5px rgba(50, 30, 20, 0.04);
+  min-width: 0;
+}
+
+.charging-page .fleet-card h4 {
+  font-size: 11px;
+  letter-spacing: 2px;
+  line-height: 1.5;
+  color: #918779;
+  margin: 0 0 20px;
+}
+
+.charging-page .fleet-card small {
+  color: #898176;
+}
+
+/* Summary cards */
+
+.charging-page .charging-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  background: #faf7ef;
+  border: 1px solid #d9cfbf;
+  margin-bottom: 15px;
+}
+
+.charging-page .charging-summary div {
+  padding: 20px;
+  border-right: 1px solid #ddd2c1;
+  min-width: 0;
+}
+
+.charging-page .charging-summary small {
+  display: block;
+  color: #918779;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  margin-bottom: 15px;
+}
+
+.charging-page .charging-summary strong {
+  font-family: Georgia, serif;
+  font-size: clamp(20px, 2vw, 30px);
+  font-weight: 400;
+}
+
+.charging-page .charging-summary strong span {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  color: #898176;
+}
+
+/* Main layout */
+
+.charging-page .charging-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 15px;
+  align-items: stretch;
+}
+
+/* Tables */
+
+.charging-page table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.charging-page th {
+  color: #898176;
+  text-align: left;
+  font-size: 10px;
+  padding: 12px 7px;
+  white-space: nowrap;
+}
+
+.charging-page td {
+  padding: 14px 7px;
+  border-top: 1px solid #e1d8ca;
+  white-space: nowrap;
+}
+
+.charging-page .progress-text {
+  color: #66887f;
+  font-weight: bold;
+}
+
+/* Allow tables to scroll instead of overlapping */
+
+.charging-page .sessions-card,
+.charging-page .history-card {
+  overflow-x: auto;
+}
+
+.charging-page .sessions-card table {
+  min-width: 540px;
+}
+
+.charging-page .history-card table {
+  min-width: 440px;
+  font-size: 11px;
+}
+
+/* Station availability */
+
+.charging-page .station-row {
+  display: grid;
+  grid-template-columns: minmax(90px, 1fr) minmax(90px, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 13px 0;
+  border-top: 1px solid #e1d8ca;
+}
+
+.charging-page .station-row div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.charging-page .station-row strong {
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.charging-page .station-row small {
+  font-size: 10px;
+}
+
+.charging-page .station-slots {
+  display: flex;
+  gap: 3px;
+  flex-wrap: nowrap;
+}
+
+.charging-page .station-slots span {
+  width: 11px;
+  height: 11px;
+  flex-shrink: 0;
+  border: 1px solid #633045;
+  border-radius: 2px;
+}
+
+.charging-page .station-slots .occupied {
+  background: #76958c;
+  border-color: #76958c;
+}
+
+/* Bottom layout */
+
+.charging-page .charging-bottom {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 15px;
+  margin-top: 15px;
+  align-items: stretch;
+}
+
+/* Charging timeline */
+
+.charging-page .timeline-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 22px 0;
+}
+
+.charging-page .timeline-row > span {
+  width: 100px;
+  flex-shrink: 0;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.charging-page .timeline-track {
+  flex: 1;
+  min-width: 0;
+  height: 18px;
+  background: #eee7dc;
+  overflow: hidden;
+}
+
+.charging-page .timeline-track div {
+  height: 100%;
+  background: #79968e;
+  border-radius: 3px;
+}
+
+.charging-page .timeline-hours {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 10px;
+  color: #898176;
+  padding-top: 5px;
+}
+
+/* Responsive layout */
+
+@media (max-width: 1100px) {
+  .charging-page .charging-main,
+  .charging-page .charging-bottom {
+    grid-template-columns: 1fr;
+  }
+
+  .charging-page .charging-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 650px) {
+  .charging-page {
+    padding: 14px;
+  }
+
+  .charging-page .page-heading h1 {
+    font-size: 26px;
+  }
+
+  .charging-page .charging-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .charging-page .charging-summary div {
+    border-right: 0;
+    border-bottom: 1px solid #ddd2c1;
+  }
+
+  .charging-page .station-row {
+    grid-template-columns: minmax(85px, 1fr) auto;
+  }
+
+  .charging-page .station-row > strong {
+    grid-column: 2;
+  }
+
+  .charging-page .timeline-row > span {
+    width: 85px;
+    font-size: 10px;
+  }
+}

@@ -1,0 +1,698 @@
+﻿.ep-page {
+  color: #302923;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 4px 0 28px;
+  font-family: "DM Sans", sans-serif;
+}
+
+.ep-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.ep-eyebrow, .ep-kicker {
+  color: #81776D;
+  font: 500 10px "DM Mono", monospace;
+  letter-spacing: .13em;
+}
+
+.ep-heading h1 {
+  margin: 9px 0 5px;
+  font: 500 clamp(30px, 4vw, 43px) "Playfair Display", Georgia, serif;
+  letter-spacing: -.035em;
+}
+
+.ep-heading h1 em {
+  color: #542333;
+  font-weight: 500;
+}
+
+.ep-heading p, .ep-panel-heading p {
+  color: #81776D;
+  font-size: 13px;
+  margin: 0;
+}
+
+.ep-demo-label {
+  border: 1px solid #D8CFC0;
+  border-radius: 5px;
+  color: #762F43;
+  font: 500 10px "DM Mono", monospace;
+  letter-spacing: .09em;
+  padding: 9px 12px;
+  white-space: nowrap;
+}
+
+.ep-period-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 12px 0;
+  border-top: 1px solid #D8CFC0;
+  border-bottom: 1px solid #D8CFC0;
+}
+
+.ep-period-row > span {
+  color: #81776D;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: 500 10px "DM Mono", monospace;
+  letter-spacing: .1em;
+}
+
+.ep-period-tabs {
+  display: flex;
+  gap: 5px;
+  background: #EAE4D8;
+  border-radius: 7px;
+  padding: 4px;
+}
+
+.ep-period-tabs button {
+  border: 0;
+  border-radius: 5px;
+  padding: 8px 15px;
+  background: transparent;
+  color: #81776D;
+  font: 500 12px "DM Sans", sans-serif;
+  cursor: pointer;
+}
+
+.ep-period-tabs button.active {
+  background: #542333;
+  color: #FBF8F1;
+}
+
+.ep-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ep-metric, .ep-panel {
+  background: #FBF8F1;
+  border: 1px solid #D8CFC0;
+  border-radius: 9px;
+}
+
+.ep-metric {
+  padding: 17px;
+  min-width: 0;
+}
+
+.ep-metric-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: #81776D;
+  font-size: 11px;
+}
+
+.ep-metric-top svg {
+  color: #66847E;
+  flex-shrink: 0;
+}
+
+.ep-metric-value {
+  margin-top: 14px;
+  color: #302923;
+  font: 500 clamp(22px, 2.5vw, 30px) "Playfair Display", Georgia, serif;
+  overflow-wrap: anywhere;
+}
+
+.ep-metric-value small {
+  color: #81776D;
+  font: 400 12px "DM Sans", sans-serif;
+}
+
+.ep-metric-note {
+  margin-top: 6px;
+  color: #81776D;
+  font-size: 10px;
+}
+
+.ep-chart-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(270px, 1fr);
+  gap: 14px;
+}
+
+.ep-panel {
+  padding: 17px;
+  min-width: 0;
+}
+
+.ep-panel-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.ep-panel-heading h2 {
+  margin: 6px 0 5px;
+  color: #302923;
+  font: 500 21px "Playfair Display", Georgia, serif;
+}
+
+.ep-unit {
+  color: #81776D;
+  font: 10px "DM Mono", monospace;
+}
+
+.ep-chart {
+  height: 300px;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.ep-efficiency-chart {
+  height: 300px;
+}
+
+.ep-chart-foot {
+  border-top: 1px solid #EAE4D8;
+  color: #81776D;
+  font-size: 10px;
+  margin-top: 8px;
+  padding-top: 10px;
+}
+
+.ep-table-panel {
+  padding-bottom: 8px;
+}
+
+.ep-table-wrap {
+  overflow-x: auto;
+  margin-top: 13px;
+}
+
+.ep-table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 530px;
+  text-align: left;
+}
+
+.ep-table th {
+  color: #81776D;
+  font: 500 10px "DM Mono", monospace;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: 12px 10px;
+  border-bottom: 1px solid #D8CFC0;
+}
+
+.ep-table td {
+  color: #302923;
+  font-size: 12px;
+  padding: 13px 10px;
+  border-bottom: 1px solid #EAE4D8;
+}
+
+.ep-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.ep-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 9px;
+}
+
+.ep-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: #81776D;
+  background: #EAE4D8;
+  border-radius: 7px;
+  padding: 13px 15px;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.ep-note svg {
+  color: #542333;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.ep-note strong {
+  color: #542333;
+}
+
+@media (max-width: 1050px) {
+  .ep-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ep-chart-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .ep-page {
+    gap: 13px;
+  }
+
+  .ep-heading h1 {
+    font-size: 32px;
+  }
+
+  .ep-metrics {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .ep-metric {
+    padding: 12px;
+  }
+
+  .ep-metric-value {
+    font-size: 22px;
+  }
+
+  .ep-period-row {
+    align-items: flex-start;
+  }
+
+  .ep-period-tabs {
+    width: 100%;
+  }
+
+  .ep-period-tabs button {
+    flex: 1;
+    padding: 8px 5px;
+  }
+
+  .ep-panel {
+    padding: 13px;
+  }
+
+  .ep-chart {
+    height: 270px;
+  }
+}
+/* HEADER READABILITY IMPROVEMENTS */
+.ep-heading {
+  padding-bottom: 12px;
+  margin-bottom: 6px;
+  gap: 24px;
+}
+
+.ep-eyebrow {
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  margin-bottom: 12px;
+}
+
+.ep-heading h1 {
+  font-size: clamp(38px, 4vw, 48px);
+  margin: 12px 0 10px;
+}
+
+.ep-heading p {
+  font-size: 14px;
+  line-height: 1.7;
+}
+/* =========================================
+   SLIDE 5 - ENERGY PERFORMANCE
+   FINAL READABILITY UPDATE
+========================================= */
+
+/* Header */
+.ep-eyebrow,
+.ep-kicker {
+  font-size: 13px !important;
+}
+
+.ep-heading h1 {
+  font-size: clamp(42px, 4vw, 50px) !important;
+}
+
+.ep-heading p,
+.ep-panel-heading p {
+  font-size: 15px !important;
+  line-height: 1.7;
+}
+
+.ep-demo-label {
+  font-size: 12px !important;
+  padding: 10px 14px;
+}
+
+/* Period selector */
+.ep-period-row > span {
+  font-size: 12px !important;
+}
+
+.ep-period-tabs button {
+  font-size: 14px !important;
+  padding: 10px 17px;
+}
+
+/* Metric cards */
+.ep-metric {
+  padding: 20px;
+}
+
+.ep-metric-top {
+  font-size: 13px !important;
+}
+
+.ep-metric-value {
+  font-size: clamp(27px, 2.5vw, 34px) !important;
+}
+
+.ep-metric-value small {
+  font-size: 14px !important;
+}
+
+.ep-metric-note {
+  font-size: 12px !important;
+  line-height: 1.5;
+}
+
+/* Chart panels */
+.ep-panel {
+  padding: 21px;
+}
+
+.ep-panel-heading h2 {
+  font-size: 25px !important;
+}
+
+.ep-unit {
+  font-size: 12px !important;
+}
+
+.ep-chart-foot {
+  font-size: 12px !important;
+  line-height: 1.6;
+}
+
+/* Tables */
+.ep-table th {
+  font-size: 12px !important;
+  padding: 15px 12px;
+}
+
+.ep-table td {
+  font-size: 14px !important;
+  padding: 16px 12px;
+}
+
+/* Information note */
+.ep-note {
+  font-size: 14px !important;
+  line-height: 1.7;
+  padding: 16px 18px;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .ep-heading h1 {
+    font-size: 34px !important;
+  }
+
+  .ep-heading p,
+  .ep-panel-heading p {
+    font-size: 14px !important;
+  }
+
+  .ep-metric-top {
+    font-size: 12px !important;
+  }
+
+  .ep-metric-value {
+    font-size: 23px !important;
+  }
+
+  .ep-metric-note {
+    font-size: 11px !important;
+  }
+
+  .ep-panel-heading h2 {
+    font-size: 22px !important;
+  }
+
+  .ep-table th {
+    font-size: 11px !important;
+  }
+
+  .ep-table td {
+    font-size: 13px !important;
+  }
+
+  .ep-note {
+    font-size: 13px !important;
+  }
+}
+/* =========================================
+   SLIDE 5 - EXTRA LARGE TEXT UPDATE
+========================================= */
+
+.ep-heading h1 {
+  font-size: 56px !important;
+}
+
+.ep-eyebrow,
+.ep-kicker {
+  font-size: 15px !important;
+}
+
+.ep-heading p,
+.ep-panel-heading p {
+  font-size: 17px !important;
+}
+
+.ep-demo-label {
+  font-size: 14px !important;
+  padding: 12px 16px;
+}
+
+/* Period selector */
+.ep-period-row > span {
+  font-size: 14px !important;
+}
+
+.ep-period-tabs button {
+  font-size: 16px !important;
+  padding: 12px 20px;
+}
+
+/* Metric cards */
+.ep-metric {
+  padding: 24px !important;
+}
+
+.ep-metric-top {
+  font-size: 15px !important;
+}
+
+.ep-metric-value {
+  font-size: 40px !important;
+  margin-top: 18px;
+}
+
+.ep-metric-value small {
+  font-size: 16px !important;
+}
+
+.ep-metric-note {
+  font-size: 14px !important;
+  margin-top: 9px;
+}
+
+/* Chart panels */
+.ep-panel {
+  padding: 24px !important;
+}
+
+.ep-panel-heading h2 {
+  font-size: 30px !important;
+}
+
+.ep-unit {
+  font-size: 14px !important;
+}
+
+.ep-chart-foot {
+  font-size: 14px !important;
+}
+
+/* Tables */
+.ep-table th {
+  font-size: 14px !important;
+  padding: 17px 13px !important;
+}
+
+.ep-table td {
+  font-size: 16px !important;
+  padding: 19px 13px !important;
+}
+
+/* Note */
+.ep-note {
+  font-size: 16px !important;
+  padding: 19px 21px !important;
+  line-height: 1.8 !important;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .ep-heading h1 {
+    font-size: 38px !important;
+  }
+
+  .ep-heading p {
+    font-size: 15px !important;
+  }
+
+  .ep-metric-value {
+    font-size: 27px !important;
+  }
+
+  .ep-metric-top {
+    font-size: 12px !important;
+  }
+
+  .ep-panel-heading h2 {
+    font-size: 24px !important;
+  }
+
+  .ep-table td {
+    font-size: 14px !important;
+  }
+}
+/* =========================================
+   SLIDE 5 - EXTRA LARGE TEXT UPDATE
+========================================= */
+
+.ep-heading h1 {
+  font-size: 56px !important;
+}
+
+.ep-eyebrow,
+.ep-kicker {
+  font-size: 15px !important;
+}
+
+.ep-heading p,
+.ep-panel-heading p {
+  font-size: 17px !important;
+}
+
+.ep-demo-label {
+  font-size: 14px !important;
+  padding: 12px 16px;
+}
+
+/* Period selector */
+.ep-period-row > span {
+  font-size: 14px !important;
+}
+
+.ep-period-tabs button {
+  font-size: 16px !important;
+  padding: 12px 20px;
+}
+
+/* Metric cards */
+.ep-metric {
+  padding: 24px !important;
+}
+
+.ep-metric-top {
+  font-size: 15px !important;
+}
+
+.ep-metric-value {
+  font-size: 40px !important;
+  margin-top: 18px;
+}
+
+.ep-metric-value small {
+  font-size: 16px !important;
+}
+
+.ep-metric-note {
+  font-size: 14px !important;
+  margin-top: 9px;
+}
+
+/* Chart panels */
+.ep-panel {
+  padding: 24px !important;
+}
+
+.ep-panel-heading h2 {
+  font-size: 30px !important;
+}
+
+.ep-unit {
+  font-size: 14px !important;
+}
+
+.ep-chart-foot {
+  font-size: 14px !important;
+}
+
+/* Tables */
+.ep-table th {
+  font-size: 14px !important;
+  padding: 17px 13px !important;
+}
+
+.ep-table td {
+  font-size: 16px !important;
+  padding: 19px 13px !important;
+}
+
+/* Note */
+.ep-note {
+  font-size: 16px !important;
+  padding: 19px 21px !important;
+  line-height: 1.8 !important;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .ep-heading h1 {
+    font-size: 38px !important;
+  }
+
+  .ep-heading p {
+    font-size: 15px !important;
+  }
+
+  .ep-metric-value {
+    font-size: 27px !important;
+  }
+
+  .ep-metric-top {
+    font-size: 12px !important;
+  }
+
+  .ep-panel-heading h2 {
+    font-size: 24px !important;
+  }
+
+  .ep-table td {
+    font-size: 14px !important;
+  }
+}
